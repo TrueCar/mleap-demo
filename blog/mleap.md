@@ -62,8 +62,8 @@ cd mleap-demo
 ### Download the Training Dataset
 
 ```
-curl https://s3-us-west-1.amazonaws.com/mleap/blog-2016-3-5/airbnb.csv.gz -o /tmp/airbnb.csv
-gunzip /tmp/airb.csv
+curl https://s3-us-west-1.amazonaws.com/mleap/blog-2016-3-5/airbnb.csv.gz -o /tmp/airbnb.csv.gz
+gunzip /tmp/airb.csv.gz
 ```
 
 ### Build the Demo Assembly and Train the Model
