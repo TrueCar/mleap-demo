@@ -42,6 +42,16 @@ Our feature pipeline can be broken into the following steps:
 
 Train the ML pipeline using the `TrainDemoPipeline` driver included in the demo code.
 
+### Install SBT
+
+If you haven't done so already, install [SBT](http://www.scala-sbt.org/). It is a build tool similar to Maven or Ant that is primarily used with Scala projects.
+
+If you have Brew, just type in this command:
+
+```
+brew install sbt
+```
+
 ### Get the Demo Source Code
 
 ```
@@ -61,9 +71,11 @@ If you downloaded the sample dataset to `/tmp/airbnb.csv`, then run the command 
 
 ```
 // Compiles for Scala 2.10.6 by default
+// This can take a little while the first time
 sbt demo/assembly
 
 // Cross-compile for 2.11.7 assembly
+// This can take a little while the first time
 sbt "+ demo/assembly"
 
 spark-submit \
