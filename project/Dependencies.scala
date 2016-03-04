@@ -7,15 +7,10 @@ object Dependencies {
   val akkaStreamVersion = "2.0.1"
 
   lazy val sparkDependencies = Seq(
-    ("org.apache.spark" %% "spark-core" % sparkVersion)
-      .exclude("org.mortbay.jetty", "servlet-api")
-      .exclude("commons-beanutils", "commons-beanutils-core")
-      .exclude("commons-collections", "commons-collections")
-      .exclude("commons-logging", "commons-logging")
-      .exclude("com.esotericsoftware.minlog", "minlog"),
+    "org.apache.spark" %% "spark-core" % sparkVersion,
     "org.apache.spark" %% "spark-sql" % sparkVersion,
     "org.apache.spark" %% "spark-mllib" % sparkVersion,
-    "org.apache.spark" %% "spark-catalyst" % sparkVersion).map(_ % "provided")
+    "org.apache.spark" %% "spark-catalyst" % sparkVersion)
 
   lazy val demoDependencies = sparkDependencies
     .union(Seq("com.truecar.mleap" %% "mleap-spark" % mleapVersion,
