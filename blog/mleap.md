@@ -55,14 +55,15 @@ brew install sbt
 ### Get the Demo Source Code
 
 ```
-git clone https://github.com/TrueCar/mleap-demo
+git clone https://github.com/TrueCar/mleap-demo.git
 cd mleap-demo
 ```
 
 ### Download the Training Dataset
 
 ```
-curl https://s3-us-west-1.amazonaws.com/mleap/blog-2016-3-5/airbnb.csv -o /tmp/airbnb.csv
+curl https://s3-us-west-1.amazonaws.com/mleap/blog-2016-3-5/airbnb.csv.gz -o /tmp/airbnb.csv
+gunzip /tmp/airb.csv
 ```
 
 ### Build the Demo Assembly and Train the Model
@@ -70,19 +71,7 @@ curl https://s3-us-west-1.amazonaws.com/mleap/blog-2016-3-5/airbnb.csv -o /tmp/a
 If you downloaded the sample dataset to `/tmp/airbnb.csv`, then run the command with these values:
 
 ```
-// Compiles for Scala 2.10.6 by default
-// This can take a little while the first time
-sbt demo/assembly
-
-// Cross-compile for 2.11.7 assembly
-// This can take a little while the first time
-sbt "+ demo/assembly"
-
-spark-submit \
---class com.truecar.mleap.spark.benchmark.TrainBenchmarkPipeline \
-./demo/target/scala-2.10/demo-assembly-0.1-SNAPSHOT.jar \
-file:/tmp/airbnb.csv \
-file:/tmp/mleap.transformer.json
+sbt "demo/run file:/tmp/airbnb.csv file:/tmp/mleap.transformer.json"
 ```
 
 ## Deploy a JSON API Server
@@ -142,13 +131,13 @@ This benchmark takes the Spark transformer we built then transforms the sample d
 Get the code for the demo at [https://github.com/TrueCar/mleap-demo](https://github.com/TrueCar/mleap-demo)
 
 ```
-git clone https://github.com/TrueCar/mleap-demo
+git clone https://github.com/TrueCar/mleap-demo.git
 ```
 
 Get the source code for MLeap at [https://github.com/TrueCar/mleap](https://github.com/TrueCar/mleap)
 
 ```
-git clone https://github.com/TrueCar/mleap
+git clone https://github.com/TrueCar/mleap.git
 ```
 
 MLeap is pushed to Sonatype snapshots, so all you have to do is include it as a dependency of your project:
