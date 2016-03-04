@@ -71,7 +71,7 @@ gunzip /tmp/airb.csv.gz
 If you downloaded the sample dataset to `/tmp/airbnb.csv`, then run the command with these values:
 
 ```
-sbt "demo/run file:/tmp/airbnb.csv file:/tmp/mleap.transformer.json"
+sbt "demo/run /tmp/airbnb.csv file:/tmp/mleap.transformer.json"
 ```
 
 ## Deploy a JSON API Server
