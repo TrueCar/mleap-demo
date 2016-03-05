@@ -63,7 +63,7 @@ cd mleap-demo
 
 ```
 curl https://s3-us-west-1.amazonaws.com/mleap/blog-2016-3-5/airbnb.csv.gz -o /tmp/airbnb.csv.gz
-gunzip /tmp/airb.csv.gz
+gunzip /tmp/airbnb.csv.gz
 ```
 
 ### Build the Demo Assembly and Train the Model
@@ -81,7 +81,7 @@ Next we will take the MLeap model and deploy it using our demo API server.
 ### Start the Demo API Server
 
 ```
-sbt "server/run file:/tmp/mleap.transformer.json"
+sbt "server/run /tmp/mleap.transformer.json"
 ```
 
 This will fire up a local server running on port 8080 that is ready to transform incoming LeapFrames. Let's try a sample CURL command. Download our sample `frame.json` file, we will send it to our server to transform and get the results back.
