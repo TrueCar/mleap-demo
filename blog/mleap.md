@@ -100,7 +100,7 @@ curl -v -XPOST \
 -d @/tmp/frame.json http://localhost:8080/transform
 ```
 
-And voilà, we have our transformed LeapFrame with our price prediction as the last value in the array. This transformation did not use a SparkContext, and we did not have to include any Spark libraries to make it happen. On average, the actual transformation time is about __.034ms__, with serialization/deserialization taking up the majority of time in our API server. If we were to take the simple approach of Kryo serializing our Spark pipeline then running it with a local SparkContext on our API server, average transformation time increases cramatically to __54ms__, which is not scalable.
+And voilà, we have our transformed LeapFrame with our price prediction as the last value in the array. This transformation did not use a SparkContext, and we did not have to include any Spark libraries to make it happen. On average, the actual transformation time is about __.034ms__, with serialization/deserialization taking up the majority of time in our API server. If we were to take the simple approach of Kryo serializing our Spark pipeline then running it with a local SparkContext on our API server, average transformation time increases cramatically to __22ms__, which is not scalable.
 
 ## Benchmarks
 
@@ -122,7 +122,7 @@ This benchmark takes the transformer we built then transforms the sample datafra
 
 ### Spark Benchmark
 
-This benchmark takes the Spark transformer we built then transforms the sample dataframe using a SparkContext over and over again. We are trying to simulate what it would be like if we were to serialize our Spark pipelines with Kryo, load them into an API server, and execute them with realtime one-off requests using a local SparkContext with master set to "local[2]". Every single request requires the creation of an RDD which in turn requires the scheduler. This is an expensive operation, hence why we see the drastically reduced performance speed. The average time for a transform pipeline to execute is __54ms__, almost __1600x__ slower than the same pipeline in MLeap. Note: we were only able to benchmark with far fewer transformations because of the speed difference and the sampling methodology used by [Scalameter](https://scalameter.github.io/).
+This benchmark takes the Spark transformer we built then transforms the sample dataframe using a SparkContext over and over again. We are trying to simulate what it would be like if we were to serialize our Spark pipelines with Kryo, load them into an API server, and execute them with realtime one-off requests using a local SparkContext with master set to "local[2]". Every single request requires the creation of a plan for the DataFrame. This is an expensive operation, hence why we see the reduced performance speed. The average time for a transform pipeline to execute is about __22ms__.
 
 ![Spark Benchmark](spark_benchmark.png)
 
