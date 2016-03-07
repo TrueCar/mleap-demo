@@ -13,9 +13,11 @@ object Dependencies {
 
   lazy val demoDependencies = sparkDependencies
     .union(Seq("com.truecar.mleap" %% "mleap-spark" % mleapVersion,
+      "com.truecar.mleap" %% "mleap-serialization" % mleapVersion,
       "com.databricks" %% "spark-csv" % "1.3.0"))
 
   lazy val serverDependencies = Seq("com.truecar.mleap" %% "mleap-runtime" % mleapVersion,
+    "com.truecar.mleap" %% "mleap-serialization" % mleapVersion,
     "com.typesafe.akka" %% "akka-stream-experimental" % akkaStreamVersion,
     "com.typesafe.akka" %% "akka-http-core-experimental" % akkaStreamVersion,
     "com.typesafe.akka" %% "akka-http-experimental" % akkaStreamVersion,

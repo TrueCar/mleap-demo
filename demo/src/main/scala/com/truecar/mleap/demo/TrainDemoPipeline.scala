@@ -1,12 +1,15 @@
 package com.truecar.mleap.demo
 
+import java.io.{FileOutputStream, File}
+import java.util.zip.ZipOutputStream
+
 import com.esotericsoftware.kryo.io.Output
-import com.truecar.mleap.core.serialization.JsonSerializationSupport._
-import com.truecar.mleap.learning.estimator._
-import com.truecar.mleap.runtime.serialization.RuntimeJsonSupport._
+import com.truecar.mleap.bundle.fs.DirectoryBundle
+import com.truecar.mleap.bundle.zip.ZipBundleWriter
+import com.truecar.mleap.runtime.estimator._
 import com.truecar.mleap.runtime.transformer.Transformer
 import com.truecar.mleap.spark.MleapSparkSupport._
-import org.apache.hadoop.conf.Configuration
+import com.truecar.mleap.serialization.json.DefaultJsonMleapSerializer
 import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.sql.SQLContext
@@ -109,9 +112,16 @@ object TrainDemoPipeline extends App {
   val mleapPipeline: Transformer = sparkPipeline
 
   // Step 5. Save our MLeap pipeline to a file
-  val outputStream = FileSystem.get(new Configuration()).create(new Path(mleapOutputPath), true)
-  mleapPipeline.serializeToStream(outputStream)
-  outputStream.close()
+  val mleapFile = new File(mleapOutputPath)
+  val bundleWriter = ZipBundleWriter(mleapFile)
+//  mleapFile.mkdirs()
+//  val bundle = DirectoryBundle(mleapFile)
+  val serializer = DefaultJsonMleapSerializer.createSerializer()
+  serializer.serializeToBundle(mleapPipeline, bundleWriter)
+  bundleWriter.out.close()
+//  val outputStream = FileSystem.get(new Configuration()).create(new Path(mleapOutputPath), true)
+//  mleapPipeline.serializeToStream(outputStream)
+//  outputStream.close()
 
   // Step 6. If specified, output a Kryo version of the original Spark pipeline
 
