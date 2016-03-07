@@ -1,15 +1,13 @@
 package com.truecar.mleap.demo
 
-import java.io.{FileOutputStream, File}
-import java.util.zip.ZipOutputStream
+import java.io.File
 
 import com.esotericsoftware.kryo.io.Output
-import com.truecar.mleap.bundle.fs.DirectoryBundle
 import com.truecar.mleap.bundle.zip.ZipBundleWriter
 import com.truecar.mleap.runtime.estimator._
 import com.truecar.mleap.runtime.transformer.Transformer
 import com.truecar.mleap.spark.MleapSparkSupport._
-import com.truecar.mleap.serialization.json.DefaultJsonMleapSerializer
+import com.truecar.mleap.serialization.ml.json.DefaultJsonMleapSerializer
 import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.sql.SQLContext

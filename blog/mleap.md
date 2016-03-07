@@ -71,7 +71,7 @@ gunzip /tmp/airbnb.csv.gz
 If you downloaded the sample dataset to `/tmp/airbnb.csv`, then run the command with these values:
 
 ```
-sbt "demo/run /tmp/airbnb.csv file:/tmp/mleap.transformer.json"
+sbt "demo/run /tmp/airbnb.csv file:/tmp/transformer.mleap"
 ```
 
 ## Deploy a JSON API Server
@@ -81,7 +81,7 @@ Next we will take the MLeap model and deploy it using our demo API server.
 ### Start the Demo API Server
 
 ```
-sbt "server/run /tmp/mleap.transformer.json"
+sbt "server/run /tmp/transformer.mleap"
 ```
 
 This will fire up a local server running on port 8080 that is ready to transform incoming LeapFrames. Let's try a sample CURL command. Download our sample `frame.json` file, we will send it to our server to transform and get the results back.
@@ -100,7 +100,7 @@ curl -v -XPOST \
 -d @/tmp/frame.json http://localhost:8080/transform
 ```
 
-And voilà, we have our transformed LeapFrame with our price prediction as the last value in the array. This transformation did not use a SparkContext, and we did not have to include any Spark libraries to make it happen. On average, the actual transformation time is about __.034ms__, with serialization/deserialization taking up the majority of time in our API server. If we were to take the simple approach of Kryo serializing our Spark pipeline then running it with a local SparkContext on our API server, average transformation time increases cramatically to __22ms__, which is not scalable.
+And voilà, we have our transformed LeapFrame with our price prediction as the last value in the array. This transformation did not use a SparkContext, and we did not have to include any Spark libraries to make it happen. On average, the actual transformation time is about __.011ms__, with serialization/deserialization taking up the majority of time in our API server. If we were to take the simple approach of Kryo serializing our Spark pipeline then running it with a local SparkContext on our API server, average transformation time increases to __22ms__. MLeap transformations currently execute around 2000x faster than out-of-the box Spark transformations for one-off requests.
 
 ## Benchmarks
 

@@ -4,7 +4,7 @@ import java.io.File
 
 import com.truecar.mleap.bundle.zip.ZipBundleReader
 import com.truecar.mleap.runtime.transformer.Transformer
-import com.truecar.mleap.serialization.json.DefaultJsonMleapSerializer
+import com.truecar.mleap.serialization.ml.json.DefaultJsonMleapSerializer
 
 /**
   * Created by hwilkins on 1/20/16.
