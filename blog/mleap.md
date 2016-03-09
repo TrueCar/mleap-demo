@@ -100,7 +100,7 @@ curl -v -XPOST \
 -d @/tmp/frame.json http://localhost:8080/transform
 ```
 
-And voilà, we have our transformed LeapFrame with our price prediction as the last value in the array. This transformation did not use a SparkContext, and we did not have to include any Spark libraries to make it happen. On average, the actual transformation time is about __.011ms__, with serialization/deserialization taking up the majority of time in our API server. If we were to take the simple approach of Kryo serializing our Spark pipeline then running it with a local SparkContext on our API server, average transformation time increases to __22ms__. MLeap transformations currently execute around 2000x faster than out-of-the box Spark transformations for one-off requests.
+And voilà, we have our transformed LeapFrame with our price prediction as the last value in the array. This transformation did not use a SparkContext, and we did not have to include any Spark libraries to make it happen. On average, the actual transformation time is about __.011ms__, with serialization/deserialization taking up the majority of time in our API server. If we were to take the simple approach of Kryo serializing our Spark pipeline then running it with a local SparkContext on our API server, average transformation time increases to __22ms__. MLeap transformations currently execute around __2000x__ faster than out-of-the box Spark transformations for one-off requests.
 
 ## Benchmarks
 
@@ -116,7 +116,7 @@ Scala Version 2.11.7
 
 ### MLeap Runtime Benchmark
 
-This benchmark takes the transformer we built then transforms the sample dataframe over and over again. As expected, transformation time increases linearly with the number of transformations performed. For this transformation, the average time to transform is about __.034ms__.
+This benchmark takes the transformer we built then transforms the sample dataframe over and over again. As expected, transformation time increases linearly with the number of transformations performed. For this transformation, the average time to transform is about __.011ms__.
 
 ![MLeap Runtime Benchmark](runtime_benchmark.png)
 
