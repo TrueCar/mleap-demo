@@ -1,6 +1,6 @@
 package com.truecar.mleap.demo.server.support
 
-import com.truecar.mleap.serialization.mleap.MleapJsonSupport._
+import com.truecar.mleap.serialization.mleap.v1.MleapJsonSupport._
 import spray.json.DefaultJsonProtocol
 
 /**

@@ -2,7 +2,7 @@ package com.truecar.mleap.demo.server.resource
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import com.truecar.mleap.runtime.LocalLeapFrame
-import com.truecar.mleap.serialization.mleap.MleapJsonSupport._
+import com.truecar.mleap.serialization.mleap.v1.MleapJsonSupport._
 import com.truecar.mleap.demo.server.service.TransformerService
 import akka.http.scaladsl.server.Directives._
 import com.truecar.mleap.demo.server.support.{TransformerJsonSupport, TransformRequest}
