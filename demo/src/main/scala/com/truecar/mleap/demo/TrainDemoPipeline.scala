@@ -72,12 +72,11 @@ object TrainDemoPipeline extends App {
     "review_scores_rating")
   val categoricalFeatures = Array("room_type",
     "host_is_super_host",
-    "cancellation_policy",
     "instant_bookable")
   val allFeatures = continuousFeatures.union(categoricalFeatures)
 
   // Filter all null values
-  val allCols = allFeatures.union(Seq("price")).map(dataset.col)
+  val allCols = allFeatures.union(Seq("cancellation_policy")).map(dataset.col)
   val nullFilter = allCols.map(_.isNotNull).reduce(_ && _)
   dataset = dataset.select(allCols: _*).filter(nullFilter).persist()
   val Array(trainingDataset, validationDataset) = dataset.randomSplit(Array(0.7, 0.3))
@@ -92,18 +91,20 @@ object TrainDemoPipeline extends App {
       outputCol = s"${feature}_index")
   }
 
+  val labelIndexer = StringIndexerEstimator(inputCol = "cancellation_policy",
+    outputCol = "cancellation_policy_index")
   val featureCols = categoricalFeatureIndexers.map(_.outputCol).union(Seq("scaled_continuous_features"))
   val featureAssembler = VectorAssemblerEstimator(inputCols = featureCols,
     outputCol = "features")
-  val estimators = Seq(continuousFeatureAssembler, continuousFeatureScaler)
+  val estimators = Seq(labelIndexer, continuousFeatureAssembler, continuousFeatureScaler)
     .union(categoricalFeatureIndexers)
     .union(Seq(featureAssembler))
   val featurePipeline = PipelineEstimator(estimators = estimators)
   val sparkFeaturePipelineModel = featurePipeline.sparkEstimate(dataset)
 
   // Step 3. Create our random forest model
-  val randomForest = RandomForestRegressionEstimator(featuresCol = "features",
-    labelCol = "price",
+  val randomForest = RandomForestClassificationEstimator(featuresCol = "features",
+    labelCol = "cancellation_policy_index",
     predictionCol = "price_prediction")
 
   // Step 4. Assemble the final pipeline by implicit conversion to MLeap models
