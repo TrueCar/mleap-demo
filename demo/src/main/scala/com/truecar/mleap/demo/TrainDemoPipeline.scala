@@ -4,14 +4,16 @@ import java.io.File
 
 import _root_.ml.bundle.fs.DirectoryBundle
 import com.esotericsoftware.kryo.io.Output
+import com.truecar.mleap.core.feature.ReverseStringIndexer
 import ml.bundle.zip.ZipBundleWriter
 import com.truecar.mleap.runtime.estimator._
 import com.truecar.mleap.serialization.ml.v1.MlJsonSerializer
-import com.truecar.mleap.runtime.transformer.Transformer
+import com.truecar.mleap.runtime.transformer.{ReverseStringIndexerModel, StringIndexerModel, Transformer}
 import com.truecar.mleap.spark.MleapSparkSupport._
 import com.truecar.mleap.serialization.ml
 import org.apache.hadoop.fs.{FileSystem, Path}
-import org.apache.spark.ml.Pipeline
+import org.apache.spark.ml.feature.IndexToString
+import org.apache.spark.ml.{Pipeline, PipelineModel, feature}
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.types._
 import org.apache.spark.{SparkConf, SparkContext}
@@ -100,15 +102,21 @@ object TrainDemoPipeline extends App {
     .union(categoricalFeatureIndexers)
     .union(Seq(featureAssembler))
   val featurePipeline = PipelineEstimator(estimators = estimators)
-  val sparkFeaturePipelineModel = featurePipeline.sparkEstimate(dataset)
+  val sparkFeaturePipelineModel = featurePipeline.sparkEstimate(dataset).asInstanceOf[PipelineModel]
+  val sparkLabelIndexer = sparkFeaturePipelineModel.stages.head.asInstanceOf[feature.StringIndexerModel]
 
   // Step 3. Create our random forest model
   val randomForest = RandomForestClassificationEstimator(featuresCol = "features",
     labelCol = "cancellation_policy_index",
-    predictionCol = "price_prediction")
+    predictionCol = "prediction_index")
+
+  val sparkReverseLabelIndexer = new IndexToString()
+    .setInputCol(randomForest.predictionCol)
+    .setOutputCol("prediction")
+    .setLabels(sparkLabelIndexer.labels)
 
   // Step 4. Assemble the final pipeline by implicit conversion to MLeap models
-  val sparkPipelineEstimator = new Pipeline().setStages(Array(sparkFeaturePipelineModel, randomForest))
+  val sparkPipelineEstimator = new Pipeline().setStages(Array(sparkFeaturePipelineModel, randomForest, sparkReverseLabelIndexer))
   val sparkPipeline = sparkPipelineEstimator.fit(trainingDataset)
   val mleapPipeline: Transformer = sparkPipeline
 
