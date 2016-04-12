@@ -10,7 +10,7 @@ import com.truecar.mleap.demo.server.service.TransformerService
 /**
   * Created by hwilkins on 1/20/16.
   */
-case class MleapServer(transformer: Transformer) {
+case class MleapServer(transformer: Transformer, port: Int) {
   def start(): Unit = {
     implicit val system = ActorSystem("mleap-transformer")
     implicit val materializer = ActorMaterializer()
@@ -20,6 +20,6 @@ case class MleapServer(transformer: Transformer) {
     val transformerResource = TransformerResource(transformerService)
     val routes = transformerResource.routes
 
-    Http().bindAndHandle(routes, "localhost", 8080)
+    Http().bindAndHandle(routes, "localhost", port)
   }
 }

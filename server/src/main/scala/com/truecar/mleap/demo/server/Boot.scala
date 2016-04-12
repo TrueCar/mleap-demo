@@ -16,5 +16,11 @@ object Boot extends App {
   val serializer = MlJsonSerializer
   val transformer = serializer.deserializeWithClass(bundleReader).asInstanceOf[Transformer]
 
-  MleapServer(transformer).start()
+  val port = if(args.length == 2) {
+    args(1).toInt
+  } else {
+    8080
+  }
+
+  MleapServer(transformer, port).start()
 }
