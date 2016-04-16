@@ -1,3 +1,7 @@
+# Note for Hadoop Conference Attendees!
+
+We will be posting instructions for how to use the Jupyter notebook to run the demo shortly, in the meantime you can run it without Jupyter by following along with the blog post in this repository under blog/mleap.md.
+
 # MLeap Demo
 
 This project is a demonstration of the capabilities of MLeap. It is

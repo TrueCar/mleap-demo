@@ -39,7 +39,7 @@ object TrainDemoPipeline extends App {
     StructField("bedrooms", DoubleType, nullable = true),
     StructField("room_type", StringType, nullable = true),
     StructField("square_feet", DoubleType, nullable = true),
-    StructField("host_is_super_host", DoubleType, nullable = true),
+    StructField("host_is_superhost", DoubleType, nullable = true),
     StructField("city", StringType, nullable = true),
     StructField("state", StringType, nullable = true),
     StructField("cancellation_policy", StringType, nullable = true),
@@ -71,7 +71,7 @@ object TrainDemoPipeline extends App {
     "number_of_reviews",
     "review_scores_rating")
   val categoricalFeatures = Array("room_type",
-    "host_is_super_host",
+    "host_is_superhost",
     "cancellation_policy",
     "instant_bookable")
   val allFeatures = continuousFeatures.union(categoricalFeatures)
