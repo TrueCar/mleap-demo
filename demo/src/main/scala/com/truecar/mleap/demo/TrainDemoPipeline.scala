@@ -4,14 +4,13 @@ import java.io.File
 
 import _root_.ml.bundle.fs.DirectoryBundle
 import com.esotericsoftware.kryo.io.Output
-import ml.bundle.zip.ZipBundleWriter
-import com.truecar.mleap.runtime.estimator._
 import com.truecar.mleap.serialization.ml.v1.MlJsonSerializer
 import com.truecar.mleap.runtime.transformer.Transformer
 import com.truecar.mleap.spark.MleapSparkSupport._
-import com.truecar.mleap.serialization.ml
 import org.apache.hadoop.fs.{FileSystem, Path}
-import org.apache.spark.ml.Pipeline
+import org.apache.spark.ml.{Pipeline, PipelineStage}
+import org.apache.spark.ml.feature.{StandardScaler, StringIndexer, VectorAssembler}
+import org.apache.spark.ml.regression.RandomForestRegressor
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.types._
 import org.apache.spark.{SparkConf, SparkContext}
@@ -82,29 +81,35 @@ object TrainDemoPipeline extends App {
   dataset = dataset.select(allCols: _*).filter(nullFilter).persist()
   val Array(trainingDataset, validationDataset) = dataset.randomSplit(Array(0.7, 0.3))
 
-  val continuousFeatureAssembler = VectorAssemblerEstimator(inputCols = continuousFeatures,
-    outputCol = "unscaled_continuous_features")
-  val continuousFeatureScaler = StandardScalerEstimator(inputCol = "unscaled_continuous_features",
-    outputCol = "scaled_continuous_features")
+  val continuousFeatureAssembler = new VectorAssembler().
+    setInputCols(continuousFeatures).
+    setOutputCol("unscaled_continuous_features")
+  val continuousFeatureScaler = new StandardScaler().
+    setInputCol("unscaled_continuous_features").
+    setOutputCol("scaled_continuous_features")
 
   val categoricalFeatureIndexers = categoricalFeatures.map {
-    feature => StringIndexerEstimator(inputCol = feature,
-      outputCol = s"${feature}_index")
+    feature => new StringIndexer().
+      setInputCol(feature).
+      setOutputCol(s"${feature}_index")
   }
 
-  val featureCols = categoricalFeatureIndexers.map(_.outputCol).union(Seq("scaled_continuous_features"))
-  val featureAssembler = VectorAssemblerEstimator(inputCols = featureCols,
-    outputCol = "features")
-  val estimators = Seq(continuousFeatureAssembler, continuousFeatureScaler)
-    .union(categoricalFeatureIndexers)
-    .union(Seq(featureAssembler))
-  val featurePipeline = PipelineEstimator(estimators = estimators)
-  val sparkFeaturePipelineModel = featurePipeline.sparkEstimate(dataset)
+  val featureCols = categoricalFeatureIndexers.map(_.getOutputCol).union(Seq("scaled_continuous_features"))
+  val featureAssembler = new VectorAssembler().
+    setInputCols(featureCols).
+    setOutputCol("features")
+  val estimators: Array[PipelineStage] = Array(continuousFeatureAssembler, continuousFeatureScaler).
+    union(categoricalFeatureIndexers).
+    union(Seq(featureAssembler))
+  val featurePipeline = new Pipeline().
+    setStages(estimators)
+  val sparkFeaturePipelineModel = featurePipeline.fit(dataset)
 
   // Step 3. Create our random forest model
-  val randomForest = RandomForestRegressionEstimator(featuresCol = "features",
-    labelCol = "price",
-    predictionCol = "price_prediction")
+  val randomForest = new RandomForestRegressor().
+    setFeaturesCol("features").
+    setLabelCol("price").
+    setPredictionCol("price_prediction")
 
   // Step 4. Assemble the final pipeline by implicit conversion to MLeap models
   val sparkPipelineEstimator = new Pipeline().setStages(Array(sparkFeaturePipelineModel, randomForest))
@@ -115,14 +120,14 @@ object TrainDemoPipeline extends App {
   val mleapFile = new File(mleapOutputPath)
   val bundleWriter = DirectoryBundle(mleapFile)
   mleapFile.mkdirs()
-//  mleapFile.mkdirs()
-//  val bundle = DirectoryBundle(mleapFile)
+  //  mleapFile.mkdirs()
+  //  val bundle = DirectoryBundle(mleapFile)
   val serializer = MlJsonSerializer
   serializer.serializeWithClass(mleapPipeline, bundleWriter)
-//  bundleWriter.out.close()
-//  val outputStream = FileSystem.get(new Configuration()).create(new Path(mleapOutputPath), true)
-//  mleapPipeline.serializeToStream(outputStream)
-//  outputStream.close()
+  //  bundleWriter.out.close()
+  //  val outputStream = FileSystem.get(new Configuration()).create(new Path(mleapOutputPath), true)
+  //  mleapPipeline.serializeToStream(outputStream)
+  //  outputStream.close()
 
   // Step 6. If specified, output a Kryo version of the original Spark pipeline
 
