@@ -4,4 +4,4 @@ tmp/
 derby.log
 metastore_db/
 *.iml
-.ipynb_checkpoints/
+.ipybn_checkpoints/
