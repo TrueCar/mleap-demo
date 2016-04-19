@@ -1,6 +1,6 @@
 # Instruction for Running Notebook
 
-In order to run the example notebook as seen in the Hadoop Conference Dublin live demo, follow these instructions.
+In order to run the example notebook as seen in the Hadoop Conference Dublin live demo, follow these instructions. These instructions have been tested with Spark 1.6.0 and 1.6.1.
 
 ## Setup Spark Jupyter Notebooks
 
@@ -50,6 +50,14 @@ vi ~/.ipython/kernels/mleap-spark/kernel.json
 # to point to your Spark installation
 ```
 
+### Download the Airbnb Dataset
+
+This is the sample dataset we got from [Inside Airbnb](http://insideairbnb.com/get-the-data.html).
+
+```
+curl https://www.dropbox.com/s/ncb3dh9aqyh649i/airbnb.avro\?dl\=0 -o /tmp/airbnb.avro
+```
+
 ### Run the Notebook
 
 Now let's load up our notebook into Jupyter!
@@ -60,6 +68,14 @@ jupyter notebook # this will start a web ui
 ```
 
 After the web UI starts, select the notebook you want to run and have fun :)
+
+### Errors with Ivy Retrieving to the Same File
+
+If you get an error trying to run the notebook about some dependency trying to download to the same file, you can try clearing you local ivy2 cache and see if that helps.
+
+```
+rm -rf ~/.ivy/cache
+```
 
 # MLeap Demo Without Jupyter
 
