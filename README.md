@@ -39,6 +39,17 @@ You will find a folder called mleap-spark under kernels, copy this folder to you
 cp -r kernels/mleap-spark ~/.ipython/kernels
 ```
 
+You will have to modify the SPARK_HOME environment variable in the kernel.json file to point to your Spark installation.
+
+```
+# edit the kernel file you just copied
+vi ~/.ipython/kernels/mleap-spark/kernel.json
+
+# change the line
+#     "SPARK_HOME": "/Users/hollinwilkins/Lib/Spark", 
+# to point to your Spark installation
+```
+
 ### Run the Notebook
 
 Now let's load up our notebook into Jupyter!
