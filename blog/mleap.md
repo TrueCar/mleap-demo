@@ -140,14 +140,14 @@ Get the source code for MLeap at [https://github.com/TrueCar/mleap](https://gith
 git clone https://github.com/TrueCar/mleap.git
 ```
 
-MLeap is pushed to Sonatype snapshots, so all you have to do is include it as a dependency of your project:
+MLeap is on Maven central, so it is very easy to include as a dependency of your project.
 
 ```
 // I just want to run my MLeap pipeline
-libraryDependencies += "com.truecar.mleap" %% "mleap-runtime" % "0.1-SNAPSHOT"
+libraryDependencies += "com.truecar.mleap" %% "mleap-runtime" % "0.1.3"
 
 // I want to train a Spark pipeline and export it to MLeap
-libraryDependencies += "com.truecar.mleap" %% "mleap-spark" % "0.1-SNAPSHOT"
+libraryDependencies += "com.truecar.mleap" %% "mleap-spark" % "0.1.3"
 ```
 
 ## How to Contribute
