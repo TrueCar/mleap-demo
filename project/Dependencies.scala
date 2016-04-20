@@ -9,7 +9,8 @@ object Dependencies {
     "org.apache.spark" %% "spark-core" % sparkVersion,
     "org.apache.spark" %% "spark-sql" % sparkVersion,
     "org.apache.spark" %% "spark-mllib" % sparkVersion,
-    "org.apache.spark" %% "spark-catalyst" % sparkVersion)
+    "org.apache.spark" %% "spark-catalyst" % sparkVersion,
+  "com.databricks" %% "spark-avro" % "2.0.1")
 
   lazy val demoDependencies = sparkDependencies
     .union(Seq("com.truecar.mleap" %% "mleap-spark" % mleapVersion,

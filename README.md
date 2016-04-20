@@ -36,14 +36,16 @@ jupyter toree install
 You will find a folder called mleap-spark under kernels, copy this folder to your home ipython directory. After doing this step, you will have access to a Spark kernel that automatically loads all of the MLeap jars via Spark Packages.
 
 ```
-cp -r kernels/mleap-spark ~/.ipython/kernels
+cp -r kernels/mleap-spark ~/.ipython/kernels # linux
+cp -r kernels/mleap-spark ~/Library/Jupyter/kernels # Mac OS X
 ```
 
 You will have to modify the SPARK_HOME environment variable in the kernel.json file to point to your Spark installation.
 
 ```
 # edit the kernel file you just copied
-vi ~/.ipython/kernels/mleap-spark/kernel.json
+vi ~/.ipython/kernels/mleap-spark/kernel.json # linux
+vi ~/Library/Jupyter/kernels/mleap-spark/kernel.json # Mac OS X
 
 # change the line
 #     "SPARK_HOME": "/Users/hollinwilkins/Lib/Spark", 
@@ -52,11 +54,7 @@ vi ~/.ipython/kernels/mleap-spark/kernel.json
 
 ### Download the Airbnb Dataset
 
-This is the sample dataset we got from [Inside Airbnb](http://insideairbnb.com/get-the-data.html).
-
-```
-curl https://www.dropbox.com/s/ncb3dh9aqyh649i/airbnb.avro\?dl\=0 -o /tmp/airbnb.avro
-```
+This is the sample dataset we got from [Inside Airbnb](http://insideairbnb.com/get-the-data.html). Download the [Airbnb avro file](https://www.dropbox.com/s/ncb3dh9aqyh649i/airbnb.avro\?dl\=0) to `/tmp/airbnb.avro` or somewhere else.
 
 ### Run the Notebook
 
