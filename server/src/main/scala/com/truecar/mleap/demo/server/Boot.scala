@@ -3,7 +3,6 @@ package com.truecar.mleap.demo.server
 import java.io.File
 
 import ml.bundle.fs.DirectoryBundle
-import ml.bundle.zip.ZipBundleReader
 import com.truecar.mleap.runtime.transformer.Transformer
 import com.truecar.mleap.serialization.ml.v1.MlJsonSerializer
 
