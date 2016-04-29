@@ -120,14 +120,8 @@ object TrainDemoPipeline extends App {
   val mleapFile = new File(mleapOutputPath)
   val bundleWriter = DirectoryBundle(mleapFile)
   mleapFile.mkdirs()
-  //  mleapFile.mkdirs()
-  //  val bundle = DirectoryBundle(mleapFile)
   val serializer = MlJsonSerializer
   serializer.serializeWithClass(mleapPipeline, bundleWriter)
-  //  bundleWriter.out.close()
-  //  val outputStream = FileSystem.get(new Configuration()).create(new Path(mleapOutputPath), true)
-  //  mleapPipeline.serializeToStream(outputStream)
-  //  outputStream.close()
 
   // Step 6. If specified, output a Kryo version of the original Spark pipeline
 

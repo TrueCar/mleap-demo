@@ -6,7 +6,7 @@ object Common {
 
   var settings: Seq[Def.Setting[_]] = Seq(
     version := appVersion,
-    scalaVersion := "2.10.6",
+    scalaVersion := "2.11.7",
     organization := "com.truecar.mleap",
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   )

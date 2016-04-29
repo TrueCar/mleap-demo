@@ -16,7 +16,7 @@ case class MleapServer(transformer: Transformer, port: Int) {
     implicit val materializer = ActorMaterializer()
     implicit val ec = system.dispatcher
 
-    val transformerService = TransformerService(transformer)
+    val transformerService = new TransformerService(transformer)
     val transformerResource = TransformerResource(transformerService)
     val routes = transformerResource.routes
 
