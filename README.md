@@ -47,15 +47,18 @@ curl https://s3-us-west-2.amazonaws.com/mleap-demo/presentation-kernel-assembly-
   -o /tmp/presentation-kernel-assembly-1.0.jar
 ```
 
-You will have to modify the SPARK_HOME environment variable in the kernel.json file to point to your Spark installation. Also, if you downloaded the assembly jar to a folder other than `/tmp` you will have to modify the SPARK_OPTS to reflect this difference.
+You will have to modify the SPARK\_HOME environment variable in the kernel.json file to point to your Spark installation. Also, if you downloaded the assembly jar to a folder other than `/tmp` you will have to modify the SPARK_OPTS to reflect this difference.
 
 ```
 # edit the kernel file you just copied
 vi ~/.ipython/kernels/mleap-spark/kernel.json # linux
 vi ~/Library/Jupyter/kernels/mleap-spark/kernel.json # Mac OS X
 
+# change the SPARK_OPTS to point to the presentation-kernel assembly
+# it should already be pointing to `/tmp` by default
+
 # change the line
-#     "SPARK_HOME": "/Users/hollinwilkins/Lib/Spark", 
+#     "SPARK_HOME": "/Users/hollinwilkins/Lib/Spark",
 # to point to your Spark installation
 ```
 
@@ -64,7 +67,8 @@ vi ~/Library/Jupyter/kernels/mleap-spark/kernel.json # Mac OS X
 This is the sample dataset we got from [Inside Airbnb](http://insideairbnb.com/get-the-data.html).
 
 ```
-curl https://s3-us-west-2.amazonaws.com/mleap-demo/airbnb.avro -o /tmp/airbnb.avro
+curl https://s3-us-west-2.amazonaws.com/mleap-demo/airbnb.avro.zip -o /tmp/airbnb.avro.zip
+unzip /tmp/airbnb.avro.zip
 ```
 
 ### Run the Notebook
