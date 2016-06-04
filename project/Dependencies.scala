@@ -1,8 +1,8 @@
 import sbt._
 
 object Dependencies {
-  val sparkVersion = "1.6.0"
-  val mleapVersion = "0.1.3"
+  val sparkVersion = "1.6.1"
+  val mleapVersion = "0.1.4-SNAPSHOT"
   val akkaStreamVersion = "2.4.2"
 
   lazy val sparkDependencies = Seq(

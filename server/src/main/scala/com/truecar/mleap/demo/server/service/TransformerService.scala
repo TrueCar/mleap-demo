@@ -29,7 +29,7 @@ class TransformerService(var transformer: Transformer)
       val zipReader = new ZipInputStream(inputStream)
       val zipBundleReader = ZipBundleReader(zipReader)
       val serializer = MlJsonSerializer
-      transformer = serializer.deserializeWithClass(zipBundleReader).asInstanceOf[Transformer]
+      transformer = serializer.deserializeWithClass(zipBundleReader).model.asInstanceOf[Transformer]
       transformer
     }
   }
