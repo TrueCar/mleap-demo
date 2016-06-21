@@ -68,7 +68,7 @@ This is the sample dataset we got from [Inside Airbnb](http://insideairbnb.com/g
 
 ```
 curl https://s3-us-west-2.amazonaws.com/mleap-demo/airbnb.avro.zip -o /tmp/airbnb.avro.zip
-unzip /tmp/airbnb.avro.zip
+unzip /tmp/airbnb.avro.zip -d /tmp
 ```
 
 ### Run the Notebook
@@ -81,6 +81,40 @@ jupyter notebook # this will start a web ui
 ```
 
 After the web UI starts, select the notebook you want to run and have fun :)
+
+
+### Starting the API Server
+
+After you have finished running the notebook, you will have created two
+new directories with Bundle.ML content in them:
+
+1. `/tmp/transformer.lr.ml` - this is the linear regression
+2. `/tmp/transformer.rf.ml` - this is the random forest
+
+Start the servers like this:
+
+```
+# Run the linear regression on port 8080
+sbt "server/run /tmp/transformer.lr.ml 8080"
+
+# Run the random forest on port 8081
+sbt "server/run /tmp/transformer.rf.ml 8081"
+```
+
+### Sending Data Into the Server
+
+Now that our servers are started up, download the sample LeapFrame JSON.
+
+```
+curl https://s3-us-west-2.amazonaws.com/mleap-demo/frame.json -o /tmp/frame.json
+```
+
+Then send it into our servers to be transformed.
+
+```
+curl -v -XPOST -H "content-type: application/json" -d@/tmp/frame.json http://localhost:8081/transform
+curl -v -XPOST -H "content-type: application/json" -d@/tmp/frame.json http://localhost:8081/transform
+```
 
 ### Errors with Ivy Retrieving to the Same File
 
