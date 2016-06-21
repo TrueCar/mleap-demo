@@ -112,7 +112,7 @@ curl https://s3-us-west-2.amazonaws.com/mleap-demo/frame.json -o /tmp/frame.json
 Then send it into our servers to be transformed.
 
 ```
-curl -v -XPOST -H "content-type: application/json" -d@/tmp/frame.json http://localhost:8081/transform
+curl -v -XPOST -H "content-type: application/json" -d@/tmp/frame.json http://localhost:8080/transform
 curl -v -XPOST -H "content-type: application/json" -d@/tmp/frame.json http://localhost:8081/transform
 ```
 
