@@ -13,7 +13,7 @@
     "CAPTURE_STANDARD_ERR": "true"
   }, 
   "argv": [
-    "/usr/local/share/jupyter/kernels/toree/bin/run.sh", 
+    "/usr/local/share/jupyter/kernels/apache_toree_scala/bin/run.sh", 
     "--profile", 
     "{connection_file}"
   ], 
