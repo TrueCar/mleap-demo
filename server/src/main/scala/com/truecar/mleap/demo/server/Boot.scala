@@ -13,7 +13,7 @@ object Boot extends App {
   val transformerPath = args(0)
   val bundleReader = DirectoryBundle(new File(transformerPath))
   val serializer = MlJsonSerializer
-  val transformer = serializer.deserializeWithClass(bundleReader).asInstanceOf[Transformer]
+  val transformer = serializer.deserializeWithClass(bundleReader).model.asInstanceOf[Transformer]
 
   val port = if(args.length == 2) {
     args(1).toInt
